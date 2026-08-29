@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
+import { readFileSync } from 'fs';
+import OpenAI from 'openai';
 
 const router = Router();
 
@@ -12,6 +14,13 @@ const OutputSchema = z.object({
   urgency: z.enum(['low', 'normal', 'high']),
   confidence: z.number().min(0).max(1),
   reason: z.string()
+});
+
+const systemPrompt = readFileSync(new URL('../../prompts/triage-v1.md', import.meta.url), 'utf-8');
+
+const client = new OpenAI({
+  baseURL: process.env.LLM_BASE_URL,
+  apiKey: process.env.LLM_API_KEY,
 });
 
 router.post('/triage', async (req, res) => {
@@ -31,8 +40,19 @@ router.post('/triage', async (req, res) => {
     });
   }
 
-  // Real model call goes here in Stage 2 — nothing yet
-  return res.status(501).json({ error: 'Real model call not implemented yet' });
+  const completion = await client.chat.completions.create({
+    model: process.env.LLM_MODEL,
+    temperature: 0,
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: inputResult.data.text }
+    ]
+  });
+
+  const rawText = completion.choices[0].message.content;
+
+  // Stage 3 will parse and validate this properly — for now just return the raw text
+  return res.status(200).json({ raw: rawText });
 });
 
 export default router;
