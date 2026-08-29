@@ -1,13 +1,11 @@
-import OpenAI from "openai";
+import express from 'express';
+import triageRouter from './routes/triage.js';
 
-const client = new OpenAI({
-  baseURL: process.env.LLM_BASE_URL,
-  apiKey: process.env.LLM_API_KEY,
+const app = express();
+app.use(express.json());
+app.use('/api', triageRouter);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });
-
-const res = await client.chat.completions.create({
-  model: process.env.LLM_MODEL,
-  messages: [{ role: "user", content: "Reply with exactly the word: ready" }],
-});
-
-console.log(res.choices[0].message.content);
