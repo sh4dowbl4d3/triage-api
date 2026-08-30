@@ -5,7 +5,7 @@ Classifies a customer support message so it lands on the right team — one requ
 ## Quickstart
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/sh4dowbl4d3/triage-api.git
 cd triage-api
 npm install
 cp .env.example .env
