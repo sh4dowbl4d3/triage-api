@@ -1,0 +1,10 @@
+[
+  { "text": "I was charged twice for my subscription this month.", "expected_category": "billing" },
+  { "text": "The app crashes every time I try to upload a photo.", "expected_category": "bug" },
+  { "text": "It would be great if you added a dark mode option.", "expected_category": "feature" },
+  { "text": "hey", "expected_category": "other" },
+  { "text": "My invoice shows the wrong amount, can you check it?", "expected_category": "billing" },
+  { "text": "The export button does nothing when I click it.", "expected_category": "bug" },
+  { "text": "Can you support exporting to PDF as well as CSV?", "expected_category": "feature" },
+  { "text": "asdkjfh", "expected_category": "other" }
+]
